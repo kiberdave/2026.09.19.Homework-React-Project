@@ -1,0 +1,40 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Internal working docs (not part of the graded deliverable)
+CLAUDE.md
+docs/
+
+# Env files (none used yet, but keep secrets out if that changes)
+.env
+.env.*
+!.env.example
+
+# Windows/OneDrive junk
+Thumbs.db
+desktop.ini
+
+# Vercel deploy output (planned per CLAUDE.md)
+.vercel

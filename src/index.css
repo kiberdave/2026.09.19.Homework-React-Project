@@ -1,0 +1,130 @@
+/* ==========================================================================
+   index.css — токены (переменные), сброс и базовая типографика.
+   Всё, что касается конкретных компонентов, лежит в App.css.
+
+   Тема переключается атрибутом data-theme на корневом <div className="app">.
+   Никаких classList и document.querySelector — значение приходит из React.
+   ========================================================================== */
+
+/* --- Светлая тема (значения по умолчанию) -------------------------------- */
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --surface-2: #fbfbfc;
+  --border: #e5e7eb;
+  --border-strong: #d1d5db;
+
+  --text: #14181f;
+  --text-muted: #6b7280;
+  --text-faint: #9ca3af;
+
+  --accent: #16a34a;
+  --accent-soft: #dcfce7;
+
+  --primary-bg: #16181d;
+  --primary-text: #ffffff;
+
+  --danger: #dc2626;
+  --danger-soft: #fee2e2;
+
+  --chip-bg: #f3f4f6;
+  --chip-text: #4b5563;
+
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.05);
+  --shadow-md: 0 8px 24px rgba(16, 24, 40, 0.12);
+
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 14px;
+
+  --sidebar-w: 236px;
+}
+
+/* --- Тёмная тема ---------------------------------------------------------- */
+[data-theme='dark'] {
+  --bg: #0e1013;
+  --surface: #171a1f;
+  --surface-2: #1c2026;
+  --border: #282d35;
+  --border-strong: #3a414b;
+
+  --text: #e9ebee;
+  --text-muted: #9aa2ad;
+  --text-faint: #6b7480;
+
+  --accent: #22c55e;
+  --accent-soft: #14321f;
+
+  --primary-bg: #e9ebee;
+  --primary-text: #14181f;
+
+  --danger: #f87171;
+  --danger-soft: #3b1d1d;
+
+  --chip-bg: #242931;
+  --chip-text: #b6bdc7;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* --- Сброс ---------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body,
+h1,
+h2,
+h3,
+p,
+ul,
+figure {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+/* --- База ------------------------------------------------------------------ */
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  background: var(--bg);
+  color: var(--text);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
