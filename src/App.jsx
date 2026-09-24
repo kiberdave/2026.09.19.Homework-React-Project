@@ -9,6 +9,7 @@
 // Разметка живёт в компонентах, сюда её не тащим.
 // ============================================================================
 
+import { useEffect, useState } from "react"
 import Layout from './components/Layout'
 import Header from './components/Header'
 import Sidebar from './components/Sidebar'
@@ -29,8 +30,19 @@ const EMPTY_FORM = { title: '', url: '', description: '', tags: '' }
 function App() {
   // --- ВРЕМЕННЫЕ ЗАГЛУШКИ ---------------------------------------------------
   // TODO вт: bookmarks и isLoading -> useState + useEffect с fetch
-  const bookmarks = PREVIEW_BOOKMARKS
-  const isLoading = false
+  const [bookmarks, setBookmarks] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    fetch(`/data/bookmarks.json`)
+      .then((response) => response.json())
+      .then((data) => {
+        setTimeout(() => {
+          setBookmarks(data)
+          setIsLoading(false)
+        }, 1000)
+        })
+  }, [])
 
   // TODO чт: view, searchTerm, selectedTag, sortBy -> useState
   const view = 'all'
