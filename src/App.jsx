@@ -22,7 +22,6 @@ import BookmarkForm from './components/BookmarkForm'
 import EmptyState from './components/EmptyState'
 import Loader from './components/Loader'
 
-import { PREVIEW_BOOKMARKS } from './previewData'
 import './App.css'
 
 const EMPTY_FORM = { title: '', url: '', description: '', tags: '' }
@@ -72,9 +71,9 @@ function App() {
     .sort()
     .map((name) => ({ name, count: tagCounts[name] }))
 
-  // TODO чт: здесь будет фильтрация по view + searchTerm + selectedTag,
-  // затем сортировка по sortBy, затем pinned наверх.
   const visibleBookmarks = bookmarks
+    .filter((bookmark) => !bookmark.isArchived)
+    .sort((a, b) => b.isPinned - a.isPinned)
 
   // --- ОБРАБОТЧИКИ (пока пустые) -------------------------------------------
   function handleViewChange(nextView) {
@@ -113,14 +112,17 @@ function App() {
   }
 
   function handleDelete(id) {
-    // TODO ср: удалить закладку иммутабельно (filter)
-    console.log('delete', id)
+    if (!window.confirm(`Delete bookmark?`))return
+    setBookmarks((prev) => prev.filter((bookmark) => bookmark.id !== id))
   }
 
   function handleTogglePin(id) {
-    // TODO чт: перевернуть isPinned иммутабельно (map)
-    console.log('pin', id)
-  }
+  setBookmarks((prev) =>
+    prev.map((bookmark) =>
+      bookmark.id === id ? { ...bookmark, isPinned: !bookmark.isPinned } : bookmark
+    )
+  )
+}
 
   function handleToggleArchive(id) {
     // TODO чт: перевернуть isArchived иммутабельно (map)
