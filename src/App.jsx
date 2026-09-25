@@ -61,15 +61,29 @@ function App() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    fetch(`/data/bookmarks.json`)
+  const saved = localStorage.getItem('bookmarks')
+
+  if (saved) {
+    setTimeout(() => {
+      setBookmarks(JSON.parse(saved))
+      setIsLoading(false)
+    }, 1000)
+  } else {
+    fetch('/data/bookmarks.json')
       .then((response) => response.json())
       .then((data) => {
         setTimeout(() => {
           setBookmarks(data)
           setIsLoading(false)
         }, 1000)
-        })
-  }, [])
+      })
+  }
+}, [])
+
+  useEffect(() => {
+    if (isLoading) return
+    localStorage.setItem('bookmarks', JSON.stringify(bookmarks))
+  }, [bookmarks, isLoading])
 
   // TODO чт: view, searchTerm, selectedTag, sortBy -> useState
   const [view, setView] = useState('all')
