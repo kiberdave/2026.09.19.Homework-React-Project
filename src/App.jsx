@@ -26,6 +26,34 @@ import './App.css'
 
 const EMPTY_FORM = { title: '', url: '', description: '', tags: '' }
 
+function parseTags(text) {
+  return text
+    .split(',')
+    .map((tag) => tag.trim())
+    .filter((tag) => tag !== '')
+}
+
+function validateForm(values) {
+  const errors = {}
+  const url = values.url.trim()
+
+  if (values.title.trim() === '') {
+    errors.title = 'Title is required'
+  }
+
+  if (url === '') {
+    errors.url = 'URL is required'
+  } else if (!(url.startsWith('http://') || url.startsWith('https://')) || !url.includes('.')) {
+    errors.url = 'Please enter a valid URL'
+  }
+
+  if (parseTags(values.tags).length === 0) {
+    errors.tags = 'Add at least one tag'
+  }
+
+  return errors
+}
+
 function App() {
   // --- ВРЕМЕННЫЕ ЗАГЛУШКИ ---------------------------------------------------
   // TODO вт: bookmarks и isLoading -> useState + useEffect с fetch
@@ -49,11 +77,10 @@ function App() {
   const selectedTag = 'all'
   const sortBy = 'newest'
 
-  // TODO ср: isModalOpen, editingBookmark, formValues, formErrors -> useState
-  const isModalOpen = false
-  const editingBookmark = null
-  const formValues = EMPTY_FORM
-  const formErrors = {}
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [editingBookmark, setEditingBookmark] = useState(null)
+  const [formValues, setFormValues] = useState(EMPTY_FORM)
+  const [formErrors, setFormErrors] = useState({})
 
   // TODO пт: theme -> useState + useEffect с localStorage
   const theme = 'light'
@@ -102,8 +129,10 @@ function App() {
   }
 
   function handleAddClick() {
-    // TODO ср: открыть модалку с пустой формой
-    console.log('add')
+  setEditingBookmark(null)
+  setFormValues(EMPTY_FORM)
+  setFormErrors({})
+  setIsModalOpen(true)
   }
 
   function handleEdit(bookmark) {
@@ -130,20 +159,33 @@ function App() {
   }
 
   function handleFormChange(field, value) {
-    // TODO ср: обновить одно поле формы
-    console.log('form', field, value)
+    setFormValues((prev) => ({...prev, [field]: value}))
   }
 
   function handleFormSubmit(e) {
     e.preventDefault()
-    // TODO ср: валидация, затем добавление или обновление
-    console.log('submit')
-  }
+
+    const errors = validateForm(formValues)
+    setFormErrors(errors)
+    if (Object.keys(errors).length > 0) return
+
+    const newBookmark = {
+      id: Date.now(),
+      title: formValues.title.trim(),
+      url: formValues.url.trim(),
+      description: formValues.description.trim(),
+      tags: parseTags(formValues.tags),
+      isPinned: false,
+      isArchived: false,
+    }
+
+    setBookmarks((prev) => [newBookmark, ...prev])
+    setIsModalOpen(false)
+}
 
   function handleModalClose() {
-    // TODO ср
-    console.log('close')
-  }
+  setIsModalOpen(false)
+}
   // --------------------------------------------------------------------------
 
   return (
