@@ -136,8 +136,15 @@ function App() {
   }
 
   function handleEdit(bookmark) {
-    // TODO ср: открыть модалку, заполнить форму значениями bookmark
-    console.log('edit', bookmark.id)
+  setEditingBookmark(bookmark)
+  setFormValues({
+    title: bookmark.title,
+    url: bookmark.url,
+    description: bookmark.description,
+    tags: bookmark.tags.join(', '),
+  })
+  setFormErrors({})
+  setIsModalOpen(true)
   }
 
   function handleDelete(id) {
@@ -151,7 +158,7 @@ function App() {
       bookmark.id === id ? { ...bookmark, isPinned: !bookmark.isPinned } : bookmark
     )
   )
-}
+  }
 
   function handleToggleArchive(id) {
     // TODO чт: перевернуть isArchived иммутабельно (map)
@@ -169,23 +176,31 @@ function App() {
     setFormErrors(errors)
     if (Object.keys(errors).length > 0) return
 
-    const newBookmark = {
-      id: Date.now(),
+    const fields = {
       title: formValues.title.trim(),
       url: formValues.url.trim(),
       description: formValues.description.trim(),
       tags: parseTags(formValues.tags),
-      isPinned: false,
-      isArchived: false,
     }
 
-    setBookmarks((prev) => [newBookmark, ...prev])
+    if (editingBookmark) {
+      setBookmarks((prev) =>
+        prev.map((bookmark) =>
+          bookmark.id === editingBookmark.id ? { ...bookmark, ...fields } : bookmark
+        )
+      )
+    } else {
+      const newBookmark = { id: Date.now(), ...fields, isPinned: false, isArchived: false }
+      setBookmarks((prev) => [newBookmark, ...prev])
+    }
+
     setIsModalOpen(false)
-}
+  }
 
   function handleModalClose() {
-  setIsModalOpen(false)
-}
+    setIsModalOpen(false)
+  }
+
   // --------------------------------------------------------------------------
 
   return (
