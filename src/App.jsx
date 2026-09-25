@@ -88,8 +88,8 @@ function App() {
   // TODO чт: view, searchTerm, selectedTag, sortBy -> useState
   const [view, setView] = useState('all')
   const [searchTerm, setSearchTerm] = useState('')
-  const selectedTag = 'all'
-  const sortBy = 'newest'
+  const [selectedTag, setSelectedTag] = useState('all')
+  const [sortBy, setSortBy] = useState('newest')
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingBookmark, setEditingBookmark] = useState(null)
@@ -113,15 +113,22 @@ function App() {
     .map((name) => ({ name, count: tagCounts[name] }))
 
   const visibleBookmarks = bookmarks
-    .filter((bookmark) => (view === 'archived' ? bookmark.isArchived : !bookmark.isArchived))
-    .filter((bookmark) => {
+  .filter((bookmark) => (view === 'archived' ? bookmark.isArchived : !bookmark.isArchived))
+  .filter((bookmark) => selectedTag === 'all' || bookmark.tags.includes(selectedTag))
+  .filter((bookmark) => {
     const query = searchTerm.trim().toLowerCase()
     return (
       bookmark.title.toLowerCase().includes(query) ||
       bookmark.description.toLowerCase().includes(query)
     )
-    })
-    .sort((a, b) => b.isPinned - a.isPinned)
+  })
+  .sort((a, b) => {
+    if (a.isPinned !== b.isPinned) return b.isPinned - a.isPinned
+    if (sortBy === 'oldest') return a.id - b.id
+    if (sortBy === 'az') return a.title.localeCompare(b.title)
+    if (sortBy === 'za') return b.title.localeCompare(a.title)
+    return b.id - a.id
+  })
 
   // --- ОБРАБОТЧИКИ (пока пустые) -------------------------------------------
   function handleViewChange(nextView) {
@@ -133,14 +140,12 @@ function App() {
 }
 
   function handleSelectTag(tag) {
-    // TODO чт
-    console.log('tag ->', tag)
-  }
+  setSelectedTag(tag)
+}
 
   function handleSortChange(value) {
-    // TODO чт
-    console.log('sort ->', value)
-  }
+  setSortBy(value)
+}
 
   function handleThemeToggle() {
     // TODO пт
@@ -228,7 +233,7 @@ function App() {
   let emptyTitle = 'Пока ничего нет'
   let emptyMessage = 'Добавь первую закладку — она появится здесь.'
 
-  if (searchTerm.trim() !== '') {
+  if (searchTerm.trim() !== '' || selectedTag !== 'all') {
     emptyTitle = 'Ничего не найдено'
     emptyMessage = 'Попробуй изменить запрос.'
   } else if (view === 'archived') {
