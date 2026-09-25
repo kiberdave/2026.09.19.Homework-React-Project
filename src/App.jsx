@@ -72,7 +72,7 @@ function App() {
   }, [])
 
   // TODO чт: view, searchTerm, selectedTag, sortBy -> useState
-  const view = 'all'
+  const [view, setView] = useState('all')
   const searchTerm = ''
   const selectedTag = 'all'
   const sortBy = 'newest'
@@ -99,14 +99,13 @@ function App() {
     .map((name) => ({ name, count: tagCounts[name] }))
 
   const visibleBookmarks = bookmarks
-    .filter((bookmark) => !bookmark.isArchived)
+    .filter((bookmark) => (view === 'archived' ? bookmark.isArchived : !bookmark.isArchived))
     .sort((a, b) => b.isPinned - a.isPinned)
 
   // --- ОБРАБОТЧИКИ (пока пустые) -------------------------------------------
   function handleViewChange(nextView) {
-    // TODO чт
-    console.log('view ->', nextView)
-  }
+  setView(nextView)
+}
 
   function handleSearchChange(value) {
     // TODO чт
@@ -161,8 +160,11 @@ function App() {
   }
 
   function handleToggleArchive(id) {
-    // TODO чт: перевернуть isArchived иммутабельно (map)
-    console.log('archive', id)
+  setBookmarks((prev) =>
+    prev.map((bookmark) =>
+      bookmark.id === id ? { ...bookmark, isArchived: !bookmark.isArchived } : bookmark
+    )
+  )
   }
 
   function handleFormChange(field, value) {
