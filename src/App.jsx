@@ -73,7 +73,7 @@ function App() {
 
   // TODO чт: view, searchTerm, selectedTag, sortBy -> useState
   const [view, setView] = useState('all')
-  const searchTerm = ''
+  const [searchTerm, setSearchTerm] = useState('')
   const selectedTag = 'all'
   const sortBy = 'newest'
 
@@ -100,6 +100,13 @@ function App() {
 
   const visibleBookmarks = bookmarks
     .filter((bookmark) => (view === 'archived' ? bookmark.isArchived : !bookmark.isArchived))
+    .filter((bookmark) => {
+    const query = searchTerm.trim().toLowerCase()
+    return (
+      bookmark.title.toLowerCase().includes(query) ||
+      bookmark.description.toLowerCase().includes(query)
+    )
+    })
     .sort((a, b) => b.isPinned - a.isPinned)
 
   // --- ОБРАБОТЧИКИ (пока пустые) -------------------------------------------
@@ -108,9 +115,8 @@ function App() {
 }
 
   function handleSearchChange(value) {
-    // TODO чт
-    console.log('search ->', value)
-  }
+  setSearchTerm(value)
+}
 
   function handleSelectTag(tag) {
     // TODO чт
@@ -205,6 +211,17 @@ function App() {
 
   // --------------------------------------------------------------------------
 
+  let emptyTitle = 'Пока ничего нет'
+  let emptyMessage = 'Добавь первую закладку — она появится здесь.'
+
+  if (searchTerm.trim() !== '') {
+    emptyTitle = 'Ничего не найдено'
+    emptyMessage = 'Попробуй изменить запрос.'
+  } else if (view === 'archived') {
+    emptyTitle = 'Архив пуст'
+    emptyMessage = 'Сюда попадут закладки, которые ты отправишь в архив.'
+  }
+
   return (
     <div className="app" data-theme={theme}>
       <Layout>
@@ -238,8 +255,8 @@ function App() {
           ) : visibleBookmarks.length === 0 ? (
             <EmptyState
               icon="✧"
-              title="Пока ничего нет"
-              message="Добавь первую закладку — она появится здесь."
+              title={emptyTitle}
+              message={emptyMessage}
             />
           ) : (
             <BookmarkList
