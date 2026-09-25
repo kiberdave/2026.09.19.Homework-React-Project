@@ -96,8 +96,11 @@ function App() {
   const [formValues, setFormValues] = useState(EMPTY_FORM)
   const [formErrors, setFormErrors] = useState({})
 
-  // TODO пт: theme -> useState + useEffect с localStorage
-  const theme = 'light'
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light')
+
+  useEffect(() => {
+  localStorage.setItem('theme', theme)
+  }, [theme])
   // --------------------------------------------------------------------------
 
   // Производные данные. Считаем прямо здесь, при рендере, в state НЕ храним —
@@ -148,9 +151,8 @@ function App() {
 }
 
   function handleThemeToggle() {
-    // TODO пт
-    console.log('theme toggle')
-  }
+  setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
+}
 
   function handleAddClick() {
   setEditingBookmark(null)
