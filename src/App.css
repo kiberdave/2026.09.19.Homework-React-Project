@@ -1,9 +1,3 @@
-/* ==========================================================================
-   App.css — component styles.
-   Section order matches the component tree from the assignment.
-   Variables (colors, radii) are declared in index.css.
-   ========================================================================== */
-
 .app {
   min-height: 100%;
   background: var(--bg);
@@ -322,6 +316,11 @@
 
 .sortselect__input:focus {
   outline: none;
+}
+
+.sortselect__input option {
+  background: var(--surface);
+  color: var(--text);
 }
 
 /* --- BookmarkList / BookmarkCard ------------------------------------------ */
