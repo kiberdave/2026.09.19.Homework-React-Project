@@ -1,14 +1,3 @@
-// ============================================================================
-// App.jsx — КАРКАС. Здесь пока нет ни одного useState и ни одного useEffect.
-//
-// Вся логика — твоя работа. Сейчас вместо state стоят обычные const,
-// чтобы можно было посмотреть вёрстку. Каждый такой const помечен TODO
-// и по ходу недели превращается в настоящий state.
-//
-// Роль App: держать state, держать обработчики и собирать компоненты.
-// Разметка живёт в компонентах, сюда её не тащим.
-// ============================================================================
-
 import { useEffect, useState } from "react"
 import Layout from './components/Layout'
 import Header from './components/Header'
@@ -55,37 +44,34 @@ function validateForm(values) {
 }
 
 function App() {
-  // --- ВРЕМЕННЫЕ ЗАГЛУШКИ ---------------------------------------------------
-  // TODO вт: bookmarks и isLoading -> useState + useEffect с fetch
   const [bookmarks, setBookmarks] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-  const saved = localStorage.getItem('bookmarks')
+    const saved = localStorage.getItem('bookmarks')
 
-  if (saved) {
-    setTimeout(() => {
-      setBookmarks(JSON.parse(saved))
-      setIsLoading(false)
-    }, 1000)
-  } else {
-    fetch('/data/bookmarks.json')
-      .then((response) => response.json())
-      .then((data) => {
-        setTimeout(() => {
-          setBookmarks(data)
-          setIsLoading(false)
-        }, 1000)
-      })
-  }
-}, [])
+    if (saved) {
+      setTimeout(() => {
+        setBookmarks(JSON.parse(saved))
+        setIsLoading(false)
+      }, 1000)
+    } else {
+      fetch('/data/bookmarks.json')
+        .then((response) => response.json())
+        .then((data) => {
+          setTimeout(() => {
+            setBookmarks(data)
+            setIsLoading(false)
+          }, 1000)
+        })
+    }
+  }, [])
 
   useEffect(() => {
     if (isLoading) return
     localStorage.setItem('bookmarks', JSON.stringify(bookmarks))
   }, [bookmarks, isLoading])
 
-  // TODO чт: view, searchTerm, selectedTag, sortBy -> useState
   const [view, setView] = useState('all')
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedTag, setSelectedTag] = useState('all')
@@ -99,7 +85,7 @@ function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light')
 
   useEffect(() => {
-  localStorage.setItem('theme', theme)
+    localStorage.setItem('theme', theme)
   }, [theme])
   // --------------------------------------------------------------------------
 
@@ -116,86 +102,85 @@ function App() {
     .map((name) => ({ name, count: tagCounts[name] }))
 
   const visibleBookmarks = bookmarks
-  .filter((bookmark) => (view === 'archived' ? bookmark.isArchived : !bookmark.isArchived))
-  .filter((bookmark) => selectedTag === 'all' || bookmark.tags.includes(selectedTag))
-  .filter((bookmark) => {
-    const query = searchTerm.trim().toLowerCase()
-    return (
-      bookmark.title.toLowerCase().includes(query) ||
-      bookmark.description.toLowerCase().includes(query)
-    )
-  })
-  .sort((a, b) => {
-    if (a.isPinned !== b.isPinned) return b.isPinned - a.isPinned
-    if (sortBy === 'oldest') return a.id - b.id
-    if (sortBy === 'az') return a.title.localeCompare(b.title)
-    if (sortBy === 'za') return b.title.localeCompare(a.title)
-    return b.id - a.id
-  })
+    .filter((bookmark) => (view === 'archived' ? bookmark.isArchived : !bookmark.isArchived))
+    .filter((bookmark) => selectedTag === 'all' || bookmark.tags.includes(selectedTag))
+    .filter((bookmark) => {
+      const query = searchTerm.trim().toLowerCase()
+      return (
+        bookmark.title.toLowerCase().includes(query) ||
+        bookmark.description.toLowerCase().includes(query)
+      )
+    })
+    .sort((a, b) => {
+      if (a.isPinned !== b.isPinned) return b.isPinned - a.isPinned
+      if (sortBy === 'oldest') return a.id - b.id
+      if (sortBy === 'az') return a.title.localeCompare(b.title)
+      if (sortBy === 'za') return b.title.localeCompare(a.title)
+      return b.id - a.id
+    })
 
-  // --- ОБРАБОТЧИКИ (пока пустые) -------------------------------------------
   function handleViewChange(nextView) {
-  setView(nextView)
-}
+    setView(nextView)
+  }
 
   function handleSearchChange(value) {
-  setSearchTerm(value)
-}
+    setSearchTerm(value)
+  }
 
   function handleSelectTag(tag) {
-  setSelectedTag(tag)
-}
+    setSelectedTag(tag)
+  }
 
   function handleSortChange(value) {
-  setSortBy(value)
-}
+    setSortBy(value)
+  }
 
   function handleThemeToggle() {
-  setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
-}
+    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
+  }
 
   function handleAddClick() {
-  setEditingBookmark(null)
-  setFormValues(EMPTY_FORM)
-  setFormErrors({})
-  setIsModalOpen(true)
+    setEditingBookmark(null)
+    setFormValues(EMPTY_FORM)
+    setFormErrors({})
+    setIsModalOpen(true)
   }
 
   function handleEdit(bookmark) {
-  setEditingBookmark(bookmark)
-  setFormValues({
-    title: bookmark.title,
-    url: bookmark.url,
-    description: bookmark.description,
-    tags: bookmark.tags.join(', '),
-  })
-  setFormErrors({})
-  setIsModalOpen(true)
+    setEditingBookmark(bookmark)
+    setFormValues({
+      title: bookmark.title,
+      url: bookmark.url,
+      description: bookmark.description,
+      tags: bookmark.tags.join(', '),
+    })
+    setFormErrors({})
+    setIsModalOpen(true)
   }
 
   function handleDelete(id) {
-    if (!window.confirm(`Delete bookmark?`))return
+    if (!window.confirm(`Delete bookmark?`)) return
     setBookmarks((prev) => prev.filter((bookmark) => bookmark.id !== id))
   }
 
   function handleTogglePin(id) {
-  setBookmarks((prev) =>
-    prev.map((bookmark) =>
-      bookmark.id === id ? { ...bookmark, isPinned: !bookmark.isPinned } : bookmark
+    setBookmarks((prev) =>
+      prev.map((bookmark) =>
+        bookmark.id === id ? { ...bookmark, isPinned: !bookmark.isPinned } : bookmark
+      )
     )
-  )
   }
 
   function handleToggleArchive(id) {
-  setBookmarks((prev) =>
-    prev.map((bookmark) =>
-      bookmark.id === id ? { ...bookmark, isArchived: !bookmark.isArchived } : bookmark
+    setBookmarks((prev) =>
+      prev.map((bookmark) =>
+        bookmark.id === id ? { ...bookmark, isArchived: !bookmark.isArchived } : bookmark
+      )
     )
-  )
   }
 
   function handleFormChange(field, value) {
-    setFormValues((prev) => ({...prev, [field]: value}))
+    setFormValues((prev) => ({ ...prev, [field]: value }))
   }
 
   function handleFormSubmit(e) {
