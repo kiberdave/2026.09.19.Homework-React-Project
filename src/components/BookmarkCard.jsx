@@ -1,7 +1,7 @@
 import TagList from './TagList'
 
-// Достаём домен из адреса: https://react.dev/learn -> react.dev
-// Обёрнуто в try/catch, потому что new URL() падает на некорректной строке.
+// Extract the domain from the URL: https://react.dev/learn -> react.dev
+// Wrapped in try/catch because new URL() throws on an invalid string.
 function getDomain(url) {
   try {
     return new URL(url).hostname.replace('www.', '')
@@ -10,9 +10,9 @@ function getDomain(url) {
   }
 }
 
-// BookmarkCard — одна закладка.
-// bookmark приходит целиком, а о действиях карточка сообщает наверх
-// через callback props. Сама она ничего не меняет.
+// BookmarkCard — a single bookmark.
+// bookmark comes in whole, and the card reports actions upward
+// via callback props. It doesn't change anything itself.
 function BookmarkCard({ bookmark, onEdit, onDelete, onTogglePin, onToggleArchive }) {
   const { title, url, description, tags, isPinned, isArchived } = bookmark
 

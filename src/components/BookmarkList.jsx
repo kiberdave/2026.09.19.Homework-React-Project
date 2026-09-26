@@ -1,7 +1,7 @@
 import BookmarkCard from './BookmarkCard'
 
-// BookmarkList — сетка карточек.
-// key = bookmark.id, а не индекс массива: id у закладки уникальный и стабильный.
+// BookmarkList — a grid of cards.
+// key = bookmark.id, not the array index: a bookmark's id is unique and stable.
 function BookmarkList({ bookmarks, onEdit, onDelete, onTogglePin, onToggleArchive }) {
   return (
     <div className="cardgrid">

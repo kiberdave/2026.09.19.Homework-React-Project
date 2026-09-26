@@ -1,4 +1,4 @@
-// Loader — показывается, пока идёт первая загрузка данных.
+// Loader — shown while the initial data load is in progress.
 function Loader({ label = 'Loading bookmarks...' }) {
   return (
     <div className="loader">

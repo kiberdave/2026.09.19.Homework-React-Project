@@ -1,6 +1,6 @@
-// FilterBar — список тегов с количеством закладок у каждого.
-// tags: массив объектов вида { name: 'React', count: 4 }
-// selectedTag: 'all' или имя тега
+// FilterBar — a list of tags with the bookmark count for each.
+// tags: an array of objects like { name: 'React', count: 4 }
+// selectedTag: 'all' or a tag name
 function FilterBar({ tags, selectedTag, onSelectTag }) {
   return (
     <div className="filterbar">

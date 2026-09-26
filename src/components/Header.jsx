@@ -1,6 +1,6 @@
-// Header — верхняя панель: место под поиск, кнопка добавления, переключатель темы.
-// children — сюда App кладёт <SearchBar />. Header не знает, что такое поиск,
-// он просто выделяет для него место.
+// Header — the top bar: a slot for search, the add button, the theme toggle.
+// children — App puts <SearchBar /> here. Header doesn't know what search is,
+// it just reserves a place for it.
 function Header({ children, onAddClick, theme, onThemeToggle }) {
   return (
     <header className="header">
@@ -11,8 +11,8 @@ function Header({ children, onAddClick, theme, onThemeToggle }) {
           type="button"
           className="btn btn--ghost btn--icon"
           onClick={onThemeToggle}
-          aria-label="Переключить тему"
-          title="Переключить тему"
+          aria-label="Toggle theme"
+          title="Toggle theme"
         >
           {theme === 'dark' ? '☀' : '☾'}
         </button>

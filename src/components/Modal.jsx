@@ -1,6 +1,6 @@
-// Modal — переиспользуемая обёртка. Не знает, что внутри:
-// в неё можно положить форму, подтверждение удаления, что угодно.
-// Это и есть composition через props.children.
+// Modal — a reusable wrapper. It doesn't know what's inside:
+// you can put a form, a delete confirmation, anything in it.
+// This is composition via props.children.
 function Modal({ isOpen, title, onClose, children }) {
   if (!isOpen) {
     return null
@@ -8,7 +8,7 @@ function Modal({ isOpen, title, onClose, children }) {
 
   return (
     <div className="modal__overlay" onClick={onClose}>
-      {/* stopPropagation, чтобы клик внутри окна не закрывал его */}
+      {/* stopPropagation so a click inside the window doesn't close it */}
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal__head">
           <h2 className="modal__title">{title}</h2>
@@ -16,7 +16,7 @@ function Modal({ isOpen, title, onClose, children }) {
             type="button"
             className="iconbtn"
             onClick={onClose}
-            aria-label="Закрыть"
+            aria-label="Close"
           >
             ✕
           </button>

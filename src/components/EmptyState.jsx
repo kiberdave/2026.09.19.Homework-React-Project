@@ -1,6 +1,6 @@
-// EmptyState — переиспользуемая заглушка.
-// Один компонент на три случая: пустой список, пустой поиск, пустой архив.
-// Разница только в тексте, который приходит через props.
+// EmptyState — a reusable placeholder.
+// One component for three cases: empty list, empty search, empty archive.
+// The only difference is the text passed in via props.
 function EmptyState({ icon, title, message }) {
   return (
     <div className="empty">

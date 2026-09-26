@@ -1,4 +1,4 @@
-// SortSelect — обычный controlled <select>.
+// SortSelect — a plain controlled <select>.
 function SortSelect({ value, onChange }) {
   return (
     <label className="sortselect">

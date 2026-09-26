@@ -1,6 +1,6 @@
-// Sidebar — логотип и навигация между видами (All / Archived).
-// children — сюда App кладёт <FilterBar /> со списком тегов.
-// Sidebar сам про теги ничего не знает.
+// Sidebar — the logo and navigation between views (All / Archived).
+// children — App puts <FilterBar /> with the tag list here.
+// Sidebar itself knows nothing about tags.
 function Sidebar({ view, onViewChange, children }) {
   return (
     <aside className="sidebar">

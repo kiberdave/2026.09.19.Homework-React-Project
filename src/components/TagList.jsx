@@ -1,5 +1,5 @@
-// TagList — чипы тегов на карточке. Ничего не умеет, только показывает.
-// key — сам тег, потому что теги внутри одной закладки уникальны.
+// TagList — tag chips on a card. It does nothing but display them.
+// key is the tag itself, because tags within one bookmark are unique.
 function TagList({ tags }) {
   return (
     <ul className="taglist">

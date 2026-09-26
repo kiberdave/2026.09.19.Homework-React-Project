@@ -1,8 +1,8 @@
 // BookmarkForm — controlled form.
-// Своего state у формы НЕТ: все значения приходят через props.values,
-// а о каждом изменении форма сообщает наверх через onChange(поле, значение).
-// Один и тот же компонент обслуживает и добавление, и редактирование —
-// разница только в том, какие values ему передали.
+// The form has NO state of its own: all values come in via props.values,
+// and the form reports every change upward via onChange(field, value).
+// The same component handles both adding and editing —
+// the only difference is which values it receives.
 function BookmarkForm({ values, errors, onChange, onSubmit, onCancel, submitLabel }) {
   return (
     <form className="form" onSubmit={onSubmit}>
@@ -46,7 +46,7 @@ function BookmarkForm({ values, errors, onChange, onSubmit, onCancel, submitLabe
           className="form__input form__input--area"
           value={values.description}
           onChange={(e) => onChange('description', e.target.value)}
-          placeholder="Короткое описание — необязательно"
+          placeholder="Short description (optional)"
         />
       </div>
 
@@ -62,7 +62,7 @@ function BookmarkForm({ values, errors, onChange, onSubmit, onCancel, submitLabe
           onChange={(e) => onChange('tags', e.target.value)}
           placeholder="React, Frontend, Documentation"
         />
-        <p className="form__hint">Через запятую. Минимум один тег.</p>
+        <p className="form__hint">Comma-separated. At least one tag.</p>
         {errors.tags && <p className="form__error">{errors.tags}</p>}
       </div>
 

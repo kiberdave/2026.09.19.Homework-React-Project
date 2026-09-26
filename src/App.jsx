@@ -89,8 +89,8 @@ function App() {
   }, [theme])
   // --------------------------------------------------------------------------
 
-  // Производные данные. Считаем прямо здесь, при рендере, в state НЕ храним —
-  // иначе пришлось бы руками держать их в синхроне с bookmarks.
+  // Derived data. Computed right here during render, NOT stored in state —
+  // otherwise we would have to keep it in sync with bookmarks by hand.
   const tagCounts = {}
   bookmarks.forEach((bookmark) => {
     bookmark.tags.forEach((tag) => {
@@ -217,15 +217,15 @@ function App() {
 
   // --------------------------------------------------------------------------
 
-  let emptyTitle = 'Пока ничего нет'
-  let emptyMessage = 'Добавь первую закладку — она появится здесь.'
+  let emptyTitle = 'Nothing here yet'
+  let emptyMessage = 'Add your first bookmark and it will show up here.'
 
   if (searchTerm.trim() !== '' || selectedTag !== 'all') {
-    emptyTitle = 'Ничего не найдено'
-    emptyMessage = 'Попробуй изменить запрос.'
+    emptyTitle = 'Nothing found'
+    emptyMessage = 'Try changing your search.'
   } else if (view === 'archived') {
-    emptyTitle = 'Архив пуст'
-    emptyMessage = 'Сюда попадут закладки, которые ты отправишь в архив.'
+    emptyTitle = 'Archive is empty'
+    emptyMessage = 'Bookmarks you archive will appear here.'
   }
 
   return (
@@ -255,7 +255,7 @@ function App() {
             <SortSelect value={sortBy} onChange={handleSortChange} />
           </div>
 
-          {/* Три состояния экрана: загрузка -> пусто -> список */}
+          {/* Three screen states: loading -> empty -> list */}
           {isLoading ? (
             <Loader />
           ) : visibleBookmarks.length === 0 ? (
@@ -276,7 +276,7 @@ function App() {
         </div>
       </Layout>
 
-      {/* Modal — reusable обёртка. Внутрь через children кладём форму. */}
+      {/* Modal is a reusable wrapper. The form goes inside via children. */}
       <Modal
         isOpen={isModalOpen}
         title={editingBookmark ? 'Edit bookmark' : 'Add a bookmark'}
